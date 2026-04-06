@@ -7,34 +7,40 @@
 <meta name="description" content="Joyantee Raina is a photographer whose work explores identity, land, and the lives shaped by political forces.">
 <link rel="stylesheet" href="style.css">
 <style>
-  /* Hero */
+  /* Hero — compact intro */
   .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    padding: 8rem 4rem 5rem;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    border-bottom: 1px solid var(--light);
+  }
+
+  .hero-portrait {
+    flex-shrink: 0;
+    width: 180px;
+    height: 220px;
+    overflow: hidden;
+    background: var(--deeper);
+    opacity: 0;
+    animation: fadeIn 1.2s ease forwards 0.6s;
+  }
+  .hero-portrait img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    display: block;
   }
 
   .hero-left {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 4rem 6rem;
+    justify-content: center;
     position: relative;
-    overflow: hidden;
   }
 
   .hero-bg-letter {
-    position: absolute;
-    top: 42%; left: 1rem;
-    transform: translateY(-50%);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 40vw;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--off);
-    line-height: 1;
-    pointer-events: none;
-    user-select: none;
+    display: none;
   }
 
   .hero-tag {
@@ -42,7 +48,7 @@
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--mid);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     position: relative;
     opacity: 0;
     animation: fadeUp 0.8s ease forwards 0.4s;
@@ -50,7 +56,7 @@
 
   h1.hero-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5vw, 5rem);
+    font-size: clamp(2.2rem, 3.5vw, 3.5rem);
     font-weight: 300;
     line-height: 1.1;
     color: var(--black);
@@ -61,20 +67,20 @@
   h1.hero-title em { font-style: italic; display: block; }
 
   .hero-snippet {
-    margin-top: 1.8rem;
-    font-size: 0.88rem;
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
     color: var(--mid);
-    max-width: 320px;
+    max-width: 380px;
     line-height: 1.85;
     border-left: 1px solid var(--light);
-    padding-left: 1.1rem;
+    padding-left: 1rem;
     position: relative;
     opacity: 0;
     animation: fadeUp 0.9s ease forwards 0.85s;
   }
 
   .hero-cta {
-    margin-top: 2.5rem;
+    margin-top: 1.8rem;
     display: flex;
     gap: 1.5rem;
     align-items: center;
@@ -93,7 +99,7 @@
   .btn-dark {
     color: var(--white);
     background: var(--black);
-    padding: 0.85rem 2rem;
+    padding: 0.75rem 1.8rem;
   }
   .btn-dark:hover { background: var(--dark); }
   .btn-text {
@@ -101,28 +107,8 @@
   }
   .btn-text:hover { color: var(--black); }
 
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-    background: var(--deeper);
-    min-height: 100vh;
-  }
-  .hero-right img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
-    display: block;
-    opacity: 0;
-    animation: fadeIn 1.2s ease forwards 0.8s;
-  }
-  .hero-caption {
-    position: absolute;
-    bottom: 1.5rem; left: 1.8rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.65rem;
-    font-style: italic;
-    color: rgba(255,255,255,0.22);
-  }
+  /* hide old hero-right — portrait is now inline */
+  .hero-right { display: none; }
 
   /* Work section */
   #work {
@@ -135,7 +121,7 @@
     align-items: flex-end;
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--light);
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
   }
 
   .label {
@@ -163,36 +149,34 @@
     line-height: 1;
   }
 
-  /* Series list — matches WordPress minimal layout */
+  /* Series grid — 2 columns with margins */
   .series-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 2.5rem;
   }
 
   .series-row {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 4rem;
-    padding: 4rem 0;
-    border-bottom: 1px solid var(--light);
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
     text-decoration: none;
     color: inherit;
     transition: background 0.3s;
+    border: 1px solid var(--light);
+    padding: 1.2rem;
   }
   .series-row:hover { background: rgba(0,0,0,0.015); }
-  .series-row:first-child { border-top: none; }
 
   .series-cover {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4/3;
     background: var(--off);
   }
   .series-cover img {
-    width: 100%; height: 100%;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
     filter: grayscale(100%);
     display: block;
     transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s;
@@ -214,8 +198,7 @@
   .series-body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem 0;
+    padding: 0.2rem 0 0.5rem;
   }
 
   .series-title-text {
@@ -329,16 +312,16 @@
 
   /* Responsive */
   @media (max-width: 1024px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-right { display: none; }
-    .hero-left { min-height: 100vh; padding: 0 2rem 5rem; }
+    .hero { padding: 7rem 2rem 4rem; gap: 2.5rem; }
+    .hero-portrait { width: 140px; height: 170px; }
     #work { padding: 5rem 2rem; }
-    .series-row { grid-template-columns: 1fr; gap: 1.5rem; padding: 3rem 0; }
-    .series-cover { max-width: 100%; aspect-ratio: 16/9; }
+    .series-list { grid-template-columns: 1fr; gap: 2rem; }
     #about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
     .about-img { max-width: 320px; }
   }
   @media (max-width: 640px) {
+    .hero { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 6rem 1.5rem 3rem; }
+    .hero-portrait { width: 120px; height: 150px; }
     #work { padding: 4rem 1.5rem; }
     .work-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
     #about { padding: 4rem 1.5rem; }
@@ -361,8 +344,10 @@
 
 <!-- Hero -->
 <section class="hero">
+  <div class="hero-portrait">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2026/02/whatsapp-image-2026-02-25-at-1.38.59-pm-6.jpeg" alt="Joyantee Raina">
+  </div>
   <div class="hero-left">
-    <div class="hero-bg-letter" aria-hidden="true">J</div>
     <div class="hero-tag">Photographer</div>
     <h1 class="hero-title">Joyantee<br><em>Raina</em></h1>
     <p class="hero-snippet">As words never felt enough, she found herself through the lens — making visuals that are a collective expression of lived experience.</p>
@@ -370,10 +355,6 @@
       <a href="#work" class="btn btn-dark">View Work</a>
       <a href="#about" class="btn btn-text">About →</a>
     </div>
-  </div>
-  <div class="hero-right">
-    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2026/02/whatsapp-image-2026-02-25-at-1.38.59-pm-6.jpeg" alt="Joyantee Raina">
-    <div class="hero-caption">© Joyantee Raina</div>
   </div>
 </section>
 
