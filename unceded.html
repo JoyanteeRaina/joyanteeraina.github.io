@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>লরানা মরানা সমান / Unceded — Joyantee Raina</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .series-hero {
+    padding: 10rem 4rem 5rem;
+    max-width: 800px;
+  }
+  .back-link {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    transition: color 0.3s, gap 0.3s;
+  }
+  .back-link:hover { color: var(--black); gap: 0.8rem; }
+
+  .series-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 1rem;
+  }
+  h1.series-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--black);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+  }
+  .series-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--mid);
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .series-statement {
+    font-size: 0.9rem;
+    color: var(--dark);
+    line-height: 1.95;
+    max-width: 680px;
+    border-left: 1px solid var(--light);
+    padding-left: 1.5rem;
+  }
+  .series-statement p { margin-bottom: 1.2rem; }
+  .series-statement p:last-child { margin-bottom: 0; }
+
+  /* Photo gallery */
+  .gallery {
+    padding: 3rem 4rem 8rem;
+    columns: 2;
+    column-gap: 1rem;
+  }
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    background: var(--off);
+    cursor: none;
+  }
+  .gallery-item img {
+    width: 100%;
+    display: block;
+    filter: grayscale(100%);
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s, opacity 0.3s;
+    opacity: 0;
+  }
+  .gallery-item img.loaded { opacity: 1; }
+  .gallery-item:hover img { transform: scale(1.03); filter: grayscale(30%); }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(14,13,12,0.96);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    display: block;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 2rem; right: 2.5rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    cursor: none;
+    transition: color 0.3s;
+    background: none;
+    border: none;
+    font-family: 'Karla', sans-serif;
+  }
+  .lightbox-close:hover { color: var(--white); }
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.3);
+    font-size: 1.5rem;
+    cursor: none;
+    transition: color 0.3s;
+    padding: 1rem;
+    font-family: 'Karla', sans-serif;
+  }
+  .lightbox-nav:hover { color: var(--white); }
+  .lightbox-prev { left: 1.5rem; }
+  .lightbox-next { right: 1.5rem; }
+  .lightbox-count {
+    position: absolute;
+    bottom: 2rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em;
+  }
+
+  /* Series nav */
+  .series-nav {
+    padding: 3rem 4rem;
+    background: var(--off);
+    border-top: 1px solid var(--light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .series-nav a {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.3s, gap 0.3s;
+  }
+  .series-nav a:hover { color: var(--black); }
+  .series-nav a.next:hover { gap: 0.8rem; }
+  .series-nav a.prev:hover { gap: 0.8rem; }
+  .series-nav-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--dark);
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  @media (max-width: 768px) {
+    .series-hero { padding: 8rem 1.5rem 3rem; }
+    .gallery { padding: 2rem 1.5rem 5rem; columns: 1; }
+    .series-nav { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<nav id="nav">
+  <a href="index.html" class="nav-name">Joyantee <em>Raina</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html#work" class="active">Work</a></li>
+    <li class="hide-mobile"><a href="index.html#about">About</a></li>
+    <li><a href="mailto:joyantee.raina@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="series-hero">
+  <a href="index.html" class="back-link">← All Work</a>
+  <div class="series-label">01 / 04 · Ongoing</div>
+  <h1 class="series-title">লরানা মরানা সমান</h1>
+  <div class="series-subtitle">Unceded (Ongoing)</div>
+  <div class="series-statement">
+    <p>This work explores land grabbing as a tool for systematic marginalization of indigenous people in three hill districts of Bangladesh – Bandarban, Rangamati, and Khagrachhari – collectively called Chittagong Hill Tracts (CHT).</p>
+    <p>To deprive a group of people of their rights, the first step is often to make them powerless, usually by seizing their resources. And for indigenous people, land is the most vital resource, as their lives are inseparable from nature. The first significant displacement in CHT occurred in 1962 with the construction of the Kaptai Dam submerging 40% of the area's cultivable land and displacing 100,000 people. Since then, indigenous land has been taken away by the state, the public, and also by law enforcement groups.</p>
+    <p>For this project, I chose the aesthetic of Kodak Aerochrome, a technology developed during WWII by a collaboration between Kodak and the US military to detect camouflaged enemy troops. By reversing its gaze, the technology is used not to hunt, but to reveal something that is intentionally being overlooked.</p>
+  </div>
+</div>
+
+<div class="gallery" id="gallery">
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_01-2.jpg" alt="Unceded 01" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_02-2.jpg" alt="Unceded 02" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_03-2.jpg" alt="Unceded 03" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_04-2.jpg" alt="Unceded 04" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_05-2.jpg" alt="Unceded 05" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_06-2.jpg" alt="Unceded 06" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_07-2.jpg" alt="Unceded 07" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_08-2.jpg" alt="Unceded 08" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_09-2.jpg" alt="Unceded 09" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_10-2.jpg" alt="Unceded 10" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_11-2.jpg" alt="Unceded 11" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_12-2.jpg" alt="Unceded 12" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_13-2.jpg" alt="Unceded 13" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_14-2.jpg" alt="Unceded 14" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_15-2.jpg" alt="Unceded 15" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_16-2.jpg" alt="Unceded 16" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_17-2.jpg" alt="Unceded 17" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_18.jpeg" alt="Unceded 18" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_19-2.jpg" alt="Unceded 19" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_20-2.jpg" alt="Unceded 20" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_21-2.jpg" alt="Unceded 21" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_22-2.jpg" alt="Unceded 22" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_23-2.jpeg" alt="Unceded 23" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_24-2.jpg" alt="Unceded 24" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_25-2.jpeg" alt="Unceded 25" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_26-2.jpg" alt="Unceded 26" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_27-2.jpg" alt="Unceded 27" loading="lazy"></div>
+  <div class="gallery-item"><img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_28-2.jpg" alt="Unceded 28" loading="lazy"></div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">Close ✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
+  <img class="lightbox-img" id="lbImg" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
+  <div class="lightbox-count" id="lbCount"></div>
+</div>
+
+<div class="series-nav">
+  <a href="index.html" class="prev">← All Series</a>
+  <a href="from-everywhere-and-nowhere.html" class="next">
+    <span>
+      Next Series<br>
+      <span class="series-nav-title">From Everywhere and Nowhere</span>
+    </span>
+    →
+  </a>
+</div>
+
+<footer>
+  <div class="footer-name">Joyantee Raina</div>
+  <ul class="footer-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="https://www.instagram.com/joyantee.raina/" target="_blank">Instagram</a></li>
+    <li><a href="mailto:joyantee.raina@gmail.com">Email</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Joyantee Raina</div>
+</footer>
+
+<script src="cursor.js"></script>
+<script>
+  // Lazy load fade in
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.addEventListener('load', () => img.classList.add('loaded'));
+    if (img.complete) img.classList.add('loaded');
+  });
+
+  // Lightbox
+  const imgs = Array.from(document.querySelectorAll('.gallery-item img'));
+  let current = 0;
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbCount = document.getElementById('lbCount');
+
+  function openLb(i) {
+    current = i;
+    lbImg.src = imgs[i].src.replace('?w=1024','');
+    lbCount.textContent = (i+1) + ' / ' + imgs.length;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function prevImg() { openLb((current - 1 + imgs.length) % imgs.length); }
+  function nextImg() { openLb((current + 1) % imgs.length); }
+
+  imgs.forEach((img, i) => img.closest('.gallery-item').addEventListener('click', () => openLb(i)));
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lbPrev').addEventListener('click', prevImg);
+  document.getElementById('lbNext').addEventListener('click', nextImg);
+  lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft') prevImg();
+    if (e.key === 'ArrowRight') nextImg();
+    if (e.key === 'Escape') closeLb();
+  });
+</script>
+</body>
+</html>

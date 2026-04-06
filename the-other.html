@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Other — Joyantee Raina</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .series-hero { padding: 10rem 4rem 5rem; max-width: 800px; }
+  .back-link { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 3rem; transition: color 0.3s, gap 0.3s; }
+  .back-link:hover { color: var(--black); gap: 0.8rem; }
+  .series-label { font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--mid); margin-bottom: 1rem; }
+  h1.series-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 300; font-style: italic; color: var(--black); line-height: 1.1; margin-bottom: 2.5rem; }
+  .series-statement { font-size: 0.9rem; color: var(--dark); line-height: 1.95; max-width: 680px; border-left: 1px solid var(--light); padding-left: 1.5rem; }
+  .series-statement p { margin-bottom: 1.2rem; }
+  .series-statement p:last-child { margin-bottom: 0; }
+
+  /* The Other has captions — single column layout */
+  .gallery {
+    padding: 3rem 4rem 8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    max-width: 780px;
+  }
+  .gallery-item { overflow: hidden; background: var(--off); cursor: none; }
+  .gallery-item img { width: 100%; display: block; filter: grayscale(100%); transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s, opacity 0.3s; opacity: 0; }
+  .gallery-item img.loaded { opacity: 1; }
+  .gallery-item:hover img { transform: scale(1.02); filter: grayscale(20%); }
+  .gallery-caption {
+    padding: 0.8rem 0 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--mid);
+    letter-spacing: 0.04em;
+  }
+
+  .lightbox { position: fixed; inset: 0; background: rgba(14,13,12,0.96); z-index: 1000; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; }
+  .lightbox.open { display: flex; }
+  .lightbox-img { max-width: 85vw; max-height: 80vh; object-fit: contain; display: block; }
+  .lightbox-caption { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-style: italic; color: rgba(255,255,255,0.4); text-align: center; }
+  .lightbox-close { position: absolute; top: 2rem; right: 2.5rem; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); cursor: none; transition: color 0.3s; background: none; border: none; font-family: 'Karla', sans-serif; }
+  .lightbox-close:hover { color: var(--white); }
+  .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.3); font-size: 1.5rem; cursor: none; transition: color 0.3s; padding: 1rem; font-family: 'Karla', sans-serif; }
+  .lightbox-nav:hover { color: var(--white); }
+  .lightbox-prev { left: 1.5rem; } .lightbox-next { right: 1.5rem; }
+  .lightbox-count { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-style: italic; color: rgba(255,255,255,0.3); }
+
+  .series-nav { padding: 3rem 4rem; background: var(--off); border-top: 1px solid var(--light); display: flex; justify-content: space-between; align-items: center; }
+  .series-nav a { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s, gap 0.3s; }
+  .series-nav a:hover { color: var(--black); gap: 0.8rem; }
+  .series-nav-title { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-style: italic; color: var(--dark); display: block; margin-top: 0.3rem; }
+
+  @media (max-width: 768px) { .series-hero { padding: 8rem 1.5rem 3rem; } .gallery { padding: 2rem 1.5rem 5rem; } .series-nav { padding: 2rem 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+<nav id="nav">
+  <a href="index.html" class="nav-name">Joyantee <em>Raina</em></a>
+  <ul class="nav-links">
+    <li><a href="index.html#work" class="active">Work</a></li>
+    <li class="hide-mobile"><a href="index.html#about">About</a></li>
+    <li><a href="mailto:joyantee.raina@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="series-hero">
+  <a href="index.html" class="back-link">← All Work</a>
+  <div class="series-label">04 / 04 · Mythology · Identity</div>
+  <h1 class="series-title">The Other</h1>
+  <div class="series-statement">
+    <p>Most of the narratives of and from the queer community are the stories of oppression and discrimination. But has it always been like this? Looking backward from the current discourses on the queer community, we find something very opposite to what it is now — the subcontinent as one of the most accepting of diversity.</p>
+    <p>And then the British came to rule. Queer communities became the reason for colonial anxiety because they were ungovernable. They introduced Section 377 and criminalized them. Even long after the British period, that law, that perspective still exists with all of its statuses.</p>
+    <p>I tried to find an alternative narrative of the queer community from the reference of Hindu mythology to show the transition that happened without any reasonable basis. To me, this is neither sacred nor taboo, neither pride nor shame. This is exactly what it is.</p>
+  </div>
+</div>
+
+<div class="gallery" id="gallery">
+  <div class="gallery-item">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_01_joyantee-reza-1.jpeg" alt="Bhagavathi" loading="lazy">
+    <div class="gallery-caption">Bhagavathi — Devi as Cross Dresser</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_05_joyantee-reza-1.jpeg" alt="Agnidev" loading="lazy">
+    <div class="gallery-caption">Agnidev as Bisexual</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_06_joyantee-reza-1.jpeg" alt="Laxmi-Narayan" loading="lazy">
+    <div class="gallery-caption">Laxmi-Narayan as Androgenous Creature</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_07_joyantee-reza-1.jpeg" alt="Budh" loading="lazy">
+    <div class="gallery-caption">Budh as Gender Fluid</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_08_joyantee-reza-1.jpeg" alt="Shiv-Parvathi" loading="lazy">
+    <div class="gallery-caption">Shiv-Parvathi as Androgenous Creature</div>
+  </div>
+  <div class="gallery-item">
+    <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_10_joyantee-reza-1.jpeg" alt="Narada" loading="lazy">
+    <div class="gallery-caption">Narada as Transman</div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">Close ✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lbPrev">‹</button>
+  <img class="lightbox-img" id="lbImg" src="" alt="">
+  <div class="lightbox-caption" id="lbCaption"></div>
+  <button class="lightbox-nav lightbox-next" id="lbNext">›</button>
+  <div class="lightbox-count" id="lbCount"></div>
+</div>
+
+<div class="series-nav">
+  <a href="white-wounds.html" class="prev">← White Wounds</a>
+  <a href="index.html" class="next"><span>Back to<br><span class="series-nav-title">All Work</span></span> →</a>
+</div>
+
+<footer>
+  <div class="footer-name">Joyantee Raina</div>
+  <ul class="footer-links">
+    <li><a href="index.html#work">Work</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="https://www.instagram.com/joyantee.raina/" target="_blank">Instagram</a></li>
+    <li><a href="mailto:joyantee.raina@gmail.com">Email</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Joyantee Raina</div>
+</footer>
+
+<script src="cursor.js"></script>
+<script>
+  document.querySelectorAll('.gallery-item img').forEach(img=>{img.addEventListener('load',()=>img.classList.add('loaded'));if(img.complete)img.classList.add('loaded');});
+  const items=Array.from(document.querySelectorAll('.gallery-item'));let current=0;
+  const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbCount=document.getElementById('lbCount'),lbCaption=document.getElementById('lbCaption');
+  function openLb(i){
+    current=i;
+    lbImg.src=items[i].querySelector('img').src.replace('?w=1024','');
+    const cap=items[i].querySelector('.gallery-caption');
+    lbCaption.textContent=cap?cap.textContent:'';
+    lbCount.textContent=(i+1)+' / '+items.length;
+    lb.classList.add('open');document.body.style.overflow='hidden';
+  }
+  function closeLb(){lb.classList.remove('open');document.body.style.overflow='';}
+  items.forEach((item,i)=>item.addEventListener('click',()=>openLb(i)));
+  document.getElementById('lbClose').addEventListener('click',closeLb);
+  document.getElementById('lbPrev').addEventListener('click',()=>openLb((current-1+items.length)%items.length));
+  document.getElementById('lbNext').addEventListener('click',()=>openLb((current+1)%items.length));
+  lb.addEventListener('click',e=>{if(e.target===lb)closeLb();});
+  document.addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='ArrowLeft')openLb((current-1+items.length)%items.length);if(e.key==='ArrowRight')openLb((current+1)%items.length);if(e.key==='Escape')closeLb();});
+</script>
+</body>
+</html>
