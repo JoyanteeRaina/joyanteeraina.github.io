@@ -32,7 +32,7 @@
     margin-bottom: 1rem;
   }
   h1.series-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: clamp(2.2rem, 5vw, 4rem);
     font-weight: 300;
     font-style: italic;
@@ -41,7 +41,7 @@
     margin-bottom: 0.4rem;
   }
   .series-subtitle {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 1rem;
     font-weight: 300;
     color: var(--mid);
@@ -49,8 +49,7 @@
     letter-spacing: 0.05em;
   }
   .series-statement {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--dark);
     line-height: 1.95;
     max-width: 680px;
@@ -76,12 +75,12 @@
   .gallery-item img {
     width: 100%;
     display: block;
-    filter: grayscale(100%);
-    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s, opacity 0.3s;
+    
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.3s;
     opacity: 0;
   }
   .gallery-item img.loaded { opacity: 1; }
-  .gallery-item:hover img { transform: scale(1.03); filter: grayscale(30%); }
+  .gallery-item:hover img { transform: scale(1.03);  }
 
   /* Lightbox */
   .lightbox {
@@ -110,7 +109,7 @@
     transition: color 0.3s;
     background: none;
     border: none;
-    font-family: 'Karla', sans-serif;
+    font-family: 'Special Elite', serif;
   }
   .lightbox-close:hover { color: var(--white); }
   .lightbox-nav {
@@ -124,7 +123,7 @@
     cursor: none;
     transition: color 0.3s;
     padding: 1rem;
-    font-family: 'Karla', sans-serif;
+    font-family: 'Special Elite', serif;
   }
   .lightbox-nav:hover { color: var(--white); }
   .lightbox-prev { left: 1.5rem; }
@@ -133,7 +132,7 @@
     position: absolute;
     bottom: 2rem; left: 50%;
     transform: translateX(-50%);
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 0.75rem;
     font-style: italic;
     color: rgba(255,255,255,0.3);
@@ -164,8 +163,8 @@
   .series-nav a.next:hover { gap: 0.8rem; }
   .series-nav a.prev:hover { gap: 0.8rem; }
   .series-nav-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
     font-style: italic;
     color: var(--dark);
     display: block;
