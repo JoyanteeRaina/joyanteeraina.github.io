@@ -46,29 +46,31 @@
     line-height: 1;
   }
 
+  /* Editorial photo grid */
   .series-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
   }
 
   .series-row {
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 4rem;
-    padding: 4rem 0;
-    border-bottom: 1px solid var(--light);
-    align-items: start;
-    text-decoration: none;
-    color: inherit;
-    transition: background 0.3s;
-  }
-  .series-row:hover { background: rgba(0,0,0,0.015); }
-
-  .series-cover {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4/3;
     background: var(--off);
+    text-decoration: none;
+    color: inherit;
+    cursor: none;
+  }
+
+  /* Editorial sizing — same as original */
+  .series-row:nth-child(1) { grid-column: span 7; aspect-ratio: 16/10; }
+  .series-row:nth-child(2) { grid-column: span 5; aspect-ratio: 4/5; }
+  .series-row:nth-child(3) { grid-column: span 5; aspect-ratio: 4/5; }
+  .series-row:nth-child(4) { grid-column: span 7; aspect-ratio: 16/10; }
+
+  .series-cover {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
   }
   .series-cover img {
     width: 100%; height: 100%;
@@ -78,61 +80,59 @@
   }
   .series-row:hover .series-cover img { transform: scale(1.04); }
 
-  .series-num {
-    position: absolute;
-    top: 1rem; left: 1.2rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.65rem;
-    font-style: italic;
-    color: rgba(255,255,255,0.6);
-  }
-
-  .series-body {
+  .series-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, transparent 100%);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem 0;
+    justify-content: flex-end;
+    padding: 2rem;
+    transition: background 0.4s;
+  }
+
+  .series-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.62rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.08em;
   }
 
   .series-title-text {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
     font-weight: 300;
     font-style: italic;
-    color: var(--black);
+    color: var(--white);
     line-height: 1.2;
-    margin-bottom: 0.5rem;
-    transition: color 0.3s;
+    margin-bottom: 0.3rem;
   }
-  .series-row:hover .series-title-text { color: var(--dark); }
 
   .series-sub {
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 1.2rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0;
   }
 
-  .series-excerpt {
-    font-size: 0.85rem;
-    color: var(--mid);
-    line-height: 1.82;
-    max-width: 520px;
-    margin-bottom: 1.5rem;
-  }
+  .series-excerpt { display: none; }
 
   .series-arrow {
-    font-size: 0.6rem;
-    letter-spacing: 0.18em;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--dark);
+    color: rgba(255,255,255,0.5);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: gap 0.3s;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.3s;
   }
-  .series-row:hover .series-arrow { gap: 0.9rem; }
+  .series-row:hover .series-arrow { opacity: 1; transform: translateY(0); }
 
   /* About */
   #about {
@@ -204,14 +204,17 @@
 
   @media (max-width: 1024px) {
     #work { padding: 6rem 2rem 4rem; }
-    .series-row { grid-template-columns: 1fr; gap: 1.5rem; padding: 3rem 0; }
-    .series-cover { aspect-ratio: 16/9; }
+    .series-row:nth-child(1),
+    .series-row:nth-child(2),
+    .series-row:nth-child(3),
+    .series-row:nth-child(4) { grid-column: span 12; aspect-ratio: 4/3; }
     #about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
     .about-img { max-width: 360px; }
   }
   @media (max-width: 640px) {
     #work { padding: 5rem 1.5rem 3rem; }
     .work-head { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .series-list { gap: 0.6rem; }
     #about { padding: 4rem 1.5rem; }
   }
 </style>
@@ -245,12 +248,11 @@
     <a href="unceded.html" class="series-row reveal">
       <div class="series-cover">
         <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2025/05/unceded_01-2.jpg" alt="Unceded">
-        <div class="series-num">01 / 04</div>
       </div>
-      <div class="series-body">
+      <div class="series-overlay">
+        <div class="series-num">01 / 04</div>
         <div class="series-title-text">লরানা মরানা সমান</div>
         <div class="series-sub">Unceded · Ongoing</div>
-        <p class="series-excerpt">This work explores land grabbing as a tool for systematic marginalization of indigenous people in the Chittagong Hill Tracts of Bangladesh — where following the serene beauty, the deeper you go, the more you find imposed fear and surveillance.</p>
         <div class="series-arrow">View Series →</div>
       </div>
     </a>
@@ -258,12 +260,11 @@
     <a href="from-everywhere-and-nowhere.html" class="series-row reveal d1">
       <div class="series-cover">
         <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/joyantee_01-9.jpg" alt="From Everywhere and Nowhere">
-        <div class="series-num">02 / 04</div>
       </div>
-      <div class="series-body">
-        <div class="series-title-text">From Everywhere<br>and Nowhere</div>
+      <div class="series-overlay">
+        <div class="series-num">02 / 04</div>
+        <div class="series-title-text">From Everywhere and Nowhere</div>
         <div class="series-sub">Identity · Nepal</div>
-        <p class="series-excerpt">The last nomadic group of Nepal, the Raute — with less than 150 members — have made the forest their home. Their life revolves in a loop of creating and breaking down their own houses; impermanence is the only constant.</p>
         <div class="series-arrow">View Series →</div>
       </div>
     </a>
@@ -271,12 +272,11 @@
     <a href="white-wounds.html" class="series-row reveal d2">
       <div class="series-cover">
         <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/water_01-5.jpeg" alt="White Wounds">
-        <div class="series-num">03 / 04</div>
       </div>
-      <div class="series-body">
+      <div class="series-overlay">
+        <div class="series-num">03 / 04</div>
         <div class="series-title-text">White Wounds</div>
         <div class="series-sub">Climate · Body · Bangladesh</div>
-        <p class="series-excerpt">Shrimp cultivation made the coastal areas of Bangladesh unbearably salty. The salt reached the uterus of women. The area that was once full of life now has neither crops, nor birds or cattle. Still, there is no sadness in their eyes — only continuous struggle for survival.</p>
         <div class="series-arrow">View Series →</div>
       </div>
     </a>
@@ -284,12 +284,11 @@
     <a href="the-other.html" class="series-row reveal d3">
       <div class="series-cover">
         <img src="https://joyanteeraina.wordpress.com/wp-content/uploads/2023/04/the-other_01_joyantee-reza-1.jpeg" alt="The Other">
-        <div class="series-num">04 / 04</div>
       </div>
-      <div class="series-body">
+      <div class="series-overlay">
+        <div class="series-num">04 / 04</div>
         <div class="series-title-text">The Other</div>
         <div class="series-sub">Identity · Mythology · Queerness</div>
-        <p class="series-excerpt">What we're denying now as our culture was once a significant part of our culture. This work finds an alternative narrative of the queer community from the reference of Hindu mythology — to show a transition that happened without any reasonable basis.</p>
         <div class="series-arrow">View Series →</div>
       </div>
     </a>
